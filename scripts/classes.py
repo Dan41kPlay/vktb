@@ -86,6 +86,11 @@ class DictLikeClass(Collection):
 
 
 @dataclass(slots=True)
+class Exercise(DictLikeClass):
+    ...
+
+
+@dataclass(slots=True)
 class BotPrefs(DictLikeClass):
     ...
 
