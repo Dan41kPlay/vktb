@@ -32,7 +32,7 @@ def decideAsync(condition: bool, target: Callable, thread_name_if_async: str) ->
 
 class Group:
     class Test:
-        tokenGroup: str = ''
+        tokenGroup: str = 'vk1.a.9PjuLuAj1EjKm7DuORO97apb8I2SurvSuGMTIf8oLZGERTWrKgP3A-oycjs-PPDWcDqmQojjZNSPBj9Sl0YSqtAI2CqRg0pPjvMFro4ihFiU0J4vDM5EauLcSmhyul9qRiG_i5KVeEC8BTB-SUXS_6hSbpTO5hlyO4Kg1fDkx0TSoDShXO5-jl0-JsgycVs5EFu_H-Lu0elTs41KcZD_gw'
         tokenUser: str = ''  # https://oauth.vk.com/authorize?client_id=8049194&scope=board,wall,offline&redirect_uri=https://oauth.vk.com/blank.html&display=page&v=5.131&response_type=token
         id: int = 200655850
         name: Optional[str] = None
@@ -50,3 +50,23 @@ class Group:
             class BugReports:
                 id: int = 0
                 name: Optional[str] = None
+
+    class Public:
+        ...
+
+
+class Database:
+    folderName: str = 'database'
+    reserveCopyDeleteTimeDays: int = 3
+    reserveCopyFolderName: str = 'reserve_copy'
+    reserveCopyFolderPath: Path = Path(folderName, reserveCopyFolderName)
+    usersFileName: str = 'users.json'
+    usersFilePath: Path = Path(folderName, usersFileName)
+    botPrefsFileName: str = 'botPrefs.json'
+    botPrefsFilePath: Path = Path(folderName, botPrefsFileName)
+    todoFileName: str = 'todo.json'
+    todoFilePath: Path = Path(folderName, todoFileName)
+
+
+logs: list[str] = []
+group: Type[Group.Test | Group.Public] = Group.Test if TEST_VERSION else Group.Public
