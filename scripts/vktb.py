@@ -1,7 +1,12 @@
-from config import *
+from .config import *
+from .classes import *
+from .functions import *
 from libs.vk_api_fast import VkApi
 from libs.vk_api_fast.bot_longpoll import VkBotEvent, VkBotEventType, VkBotLongPoll
 from libs.vk_api_fast.exceptions import ApiError, VkApiError
+
+
+botPrefs: BotPrefs
 
 
 def main():
