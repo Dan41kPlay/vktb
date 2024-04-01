@@ -1,0 +1,2 @@
+# vktb
+VK trainer bot
