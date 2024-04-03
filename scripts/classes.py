@@ -23,7 +23,7 @@ __all__ = ['botPrefs', 'DictLikeClass', 'BotPrefs', 'VersionInfo', 'Users', 'Bas
 
 @dataclass
 class VersionInfo:
-    full: str = f'1.0.0indev06.00 (000000.0-0600.{datetime.now():{Constants.DateTimeForms.forVersion}})'
+    full: str = f'1.0.0indev07.00 (000000.0-0700.{datetime.now():{Constants.DateTimeForms.forVersion}})'
     name: str = 'Release'
     changelog: str = (
         '\n\n❕1.0.0r'
@@ -229,6 +229,12 @@ class BaseUser(DictLikeClass):
     exercise: int = 0
     exercises: list[UserExercise] = field(default_factory=list)
     profiles: list[list[list[str]]] = field(default_factory=list)
+    lastMessage: str = ''
+    lastKeyboard: str = 'main'
+
+    @property
+    def fullName(self):
+        return f'{self.firstName} {self.lastName}'
 
     @property
     def exercisesNames(self):
@@ -240,6 +246,23 @@ class BaseUser(DictLikeClass):
     @property
     def currentExercise(self) -> UserExercise:
         return self.getExerciseByName(self.profiles[self.profile][self.day][self.exercise])
+
+    def createKeyboard(self, keyboard_type: str, inline: bool = None, has_to_menu_button: bool = None) -> str:
+        inline = keyboard_type in Constants.inlineKeyboards if inline is None else inline
+        hasToMenuButton = keyboard_type in Constants.keyboardsWithToMenuButton if has_to_menu_button is None else has_to_menu_button
+        if keyboard_type == 'last':
+            keyboard_type = self.lastKeyboard
+        kb = VkKeyboard(inline=inline)
+
+        match keyboard_type:
+
+            case 'main':
+                kb.add_button('бебе', 'primary')
+
+        if not inline and hasToMenuButton:
+            kb.add_button('🔚В меню', 'negative')
+
+        return kb.get_keyboard()
 
 
 class Users(dict):

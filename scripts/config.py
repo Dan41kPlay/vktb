@@ -2,7 +2,6 @@ from pathlib import Path
 from threading import Thread
 from typing import Callable, Final, Optional, Type
 
-
 from libs.vk_api_fast.bot_longpoll import VkBotEventType
 
 
@@ -36,19 +35,6 @@ class Group:
         name: Optional[str] = None
         title: Optional[str] = None
 
-        class Topics:
-            class Feedbacks:
-                id: int = 0
-                name: Optional[str] = None
-
-            class Suggestions:
-                id: int = 0
-                name: Optional[str] = None
-
-            class BugReports:
-                id: int = 0
-                name: Optional[str] = None
-
     class Public:
         ...
 
@@ -66,6 +52,10 @@ class Constants:
     devId = 483021086
     specialChar: str = '⍼'
     vkIP: str = '87.240.132.78'
+
+    inlineKeyboards: set[str] = set()
+    keyboardsWithToMenuButton: set[str] = set()
+
 
 
 class Database:
