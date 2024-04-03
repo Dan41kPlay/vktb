@@ -64,6 +64,15 @@ def main():
                     f'Unable to send message to user '
                     f'{self.getName(name_form='full', with_id=True)} without their permission.')
 
+        def update(self, user_info: dict[str, Any], update_at_JSON: bool = True) -> None:
+            self.firstName = user_info['first_name']
+            self.lastName = user_info['last_name']
+            self.gender = user_info['sex']
+            if update_at_JSON:
+                updateAtJSON()
+
+            log('info', f'Updated user {self.getName(name_form='full', with_id=True)}', 2)
+
         def getName(self, *,
                     name_form: Literal['full', 'short'] = 'short',
                     name_case: Literal['nom', 'gen', 'dat', 'acc', 'ins', 'abl'] = 'nom',
@@ -302,9 +311,6 @@ def main():
         def updateReserveCopy():
             while True:
                 try:
-                    for userUpdate in users.values():
-                        userUpdate.generateSecretKey()
-                        userUpdate.updateSubscription()
                     users.toFile(Path(Database.reserveCopyFolderPath,
                                       f'{datetime.now():{Constants.DateTimeForms.forReserveCopy}}_{Database.usersFileName}'))
                     for file in listdir(str(Database.reserveCopyFolderPath)):
