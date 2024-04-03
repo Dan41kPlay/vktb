@@ -283,7 +283,4 @@ class VkBotLongPoll(object):
         """
 
         while True:
-            try:
-                yield from self.check()
-            except requests.exceptions.SSLError:
-                pass
+            yield from self.check()

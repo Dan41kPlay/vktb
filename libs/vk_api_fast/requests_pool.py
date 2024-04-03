@@ -10,7 +10,7 @@ from collections import namedtuple
 
 from .exceptions import VkRequestsPoolException
 from .execute import VkFunction
-from ujson import dumps as sjson_dumps
+from .utils import sjson_dumps
 
 PoolRequest = namedtuple('PoolRequest', ['method', 'values', 'result'])
 

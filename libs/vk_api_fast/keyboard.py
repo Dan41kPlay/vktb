@@ -8,7 +8,7 @@
 from enum import Enum
 
 
-from ujson import dumps as sjson_dumps
+from .utils import sjson_dumps
 
 
 MAX_BUTTONS_ON_LINE = 5

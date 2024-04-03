@@ -525,7 +525,7 @@ class VkLongPoll(object):
 
         if self.group_id:
             values['group_id'] = self.group_id
-
+            
         response = self.vk.method('messages.getLongPollServer', values)
 
         self.key = response['key']
@@ -616,4 +616,5 @@ class VkLongPoll(object):
         """
 
         while True:
-            yield from self.check()
+            for event in self.check():
+                yield event

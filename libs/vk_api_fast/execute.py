@@ -6,7 +6,7 @@
 :copyright: (c) 2019 python273
 """
 
-from ujson import dumps as sjson_dumps
+from .utils import sjson_dumps
 from .vk_api import VkApi, VkApiMethod
 
 

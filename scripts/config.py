@@ -6,21 +6,19 @@ from typing import Callable, Final, Optional, Type
 from libs.vk_api_fast.bot_longpoll import VkBotEventType
 
 
-__all__ = ['Group', 'Constants', 'Database', 'logs', 'group', 'VKC', 'decideAsync',
-           'TEST_VERSION', 'WORKING', 'LOG_MODE', 'VKC_ENABLED', 'UPDATE_DATABASE_ON_START', 'UPDATE_DATABASE_ON_LISTEN_ERROR',
-           'ASYNC_DATABASE_UPDATE', 'ADD_USERS_FROM_ALL_CONVERSATIONS', 'SKIP_UPDATES', 'POST_UPDATE_MESSAGE', 'RPI_GPIO_ENABLED']
+__all__ = ['Group', 'Constants', 'Database', 'logs', 'group', 'decideAsync',
+           'TEST_VERSION', 'WORKING', 'LOG_MODE',  'UPDATE_DATABASE_ON_START', 'UPDATE_DATABASE_ON_LISTEN_ERROR',
+           'ASYNC_DATABASE_UPDATE', 'ADD_USERS_FROM_ALL_CONVERSATIONS', 'SKIP_UPDATES', 'POST_UPDATE_MESSAGE']
 
 TEST_VERSION: Final[bool] = True
 WORKING: bool = True
 LOG_MODE: int = 1
-VKC_ENABLED: Final[bool] = False
 UPDATE_DATABASE_ON_START: Final[bool] = True
 UPDATE_DATABASE_ON_LISTEN_ERROR: bool = True
 ASYNC_DATABASE_UPDATE: bool = True
 ADD_USERS_FROM_ALL_CONVERSATIONS: Final[bool] = True
 SKIP_UPDATES: Final[bool] = False
 POST_UPDATE_MESSAGE: Final[bool] = True
-RPI_GPIO_ENABLED: bool = False
 
 
 def decideAsync(condition: bool, target: Callable, thread_name_if_async: str) -> None:
@@ -66,6 +64,10 @@ class Database:
     botPrefsFilePath: Path = Path(folderName, botPrefsFileName)
     todoFileName: str = 'todo.json'
     todoFilePath: Path = Path(folderName, todoFileName)
+
+
+class Constants:
+    ...
 
 
 logs: list[str] = []

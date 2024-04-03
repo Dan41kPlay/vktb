@@ -6,17 +6,18 @@
 :copyright: (c) 2019 python273
 """
 
-import ujson as json
+import json
 import logging
 import random
 import re
+import threading
 import time
 import urllib.parse
 from hashlib import md5
 
 import requests
 
-import jconfig
+from .jconfig import *
 from .enums import VkUserPermissions
 from .exceptions import *
 from .utils import (
@@ -127,6 +128,8 @@ class VkApi(object):
             TOO_MANY_RPS_CODE: self.too_many_rps_handler,
             TWOFACTOR_CODE: auth_handler or self.auth_handler
         }
+
+        self.lock = threading.Lock()
 
         self.logger = logging.getLogger('vk_api')
 
@@ -593,8 +596,6 @@ class VkApi(object):
         :param error: исключение
         """
 
-        # self.logger.warning('Too many requests! Sleeping 0.5 sec...')
-
         return error.try_method()
 
     def auth_handler(self):
@@ -646,12 +647,15 @@ class VkApi(object):
             values['captcha_sid'] = captcha_sid
             values['captcha_key'] = captcha_key
 
-        response = self.http.post(
-            'https://api.vk.com/method/' + method,
-            values,
-            headers={'Cookie': ''}
-        )
-        self.last_request = time.time()
+        with self.lock:
+            # Ограничение 3 запроса в секунду
+
+            response = self.http.post(
+                'https://api.vk.com/method/' + method,
+                values,
+                headers={'Cookie': ''}
+            )
+            self.last_request = time.time()
 
         if response.ok:
             response = response.json()

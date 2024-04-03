@@ -1,3 +1,6 @@
+from ctypes import windll
+from tendo.singleton import SingleInstance, SingleInstanceException
+
 from .config import *
 from .classes import *
 from .functions import *
@@ -19,3 +22,24 @@ def main():
             group.title = groupInfo['name']
         if group.name is None:
             group.name = groupInfo['screen_name']
+
+
+def preMain() -> None:
+    try:
+        me = SingleInstance()
+    except SingleInstanceException:
+        windll.user32.MessageBoxW(0, 'Another instance of the bot is already running!', 'Error!', 0, 0x00001000)
+        exit()
+    if not isConnected():
+        windll.user32.MessageBoxW(0, 'No Internet connection!', 'Error!', 0, 0x00001000)
+        exit()
+    while True:
+        try:
+            main()
+        except Exception as exception:
+            log('error', exception)
+            log('info', 'Critical error occurred, restarting bot...')
+
+
+if __name__ == '__main__':
+    preMain()

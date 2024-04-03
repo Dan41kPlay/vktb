@@ -23,7 +23,7 @@ __all__ = ['botPrefs', 'DictLikeClass', 'BotPrefs', 'VersionInfo', 'Users', 'Bas
 
 @dataclass
 class VersionInfo:
-    full: str = f'1.0.0indev03.00 (000000.0-0300.{datetime.now():{Constants.DateTimeForms.forVersion}})'
+    full: str = f'1.0.0indev04.00 (000000.0-0300.{datetime.now():{Constants.DateTimeForms.forVersion}})'
     name: str = 'Release'
     changelog: str = (
         '\n\n❕1.0.0r'
@@ -87,16 +87,47 @@ class DictLikeClass(Collection):
 
 @dataclass(slots=True)
 class Exercise(DictLikeClass):
+    name: str
+    description: str
+    animationPath: Path
+
+
+@dataclass(slots=True)
+class Exercises(DictLikeClass):
     ...
 
 
 @dataclass(slots=True)
 class BotPrefs(DictLikeClass):
-    ...
+    exercises: Exercises = field(default_factory=Exercises)
 
 
 botPrefs = BotPrefs.fromFile(Database.botPrefsFilePath)
 _botPrefs = BotPrefs()
+
+
+@dataclass(slots=True)
+class Approaches(DictLikeClass):
+    amount: int
+    repetitions: int
+    weight: float
+
+
+@dataclass(slots=True)
+class WarmUpApproaches(Approaches):
+    pass
+
+
+@dataclass(slots=True)
+class MainApproaches(Approaches):
+    pass
+
+
+@dataclass(slots=True)
+class UserExercise(DictLikeClass):
+    name: str
+    warmUpApproaches: WarmUpApproaches
+    mainApproaches: MainApproaches
 
 
 @dataclass(slots=True)
@@ -105,6 +136,22 @@ class BaseUser(DictLikeClass):
     firstName: str = ''
     lastName: str = ''
     gender: int = 0
+    profile: int = 0
+    day: int = 0
+    exercise: int = 0
+    exercises: list[UserExercise] = field(default_factory=list)
+    profiles: list[list[list[str]]] = field(default_factory=list)
+
+    @property
+    def exercisesNames(self):
+        return {exercise.name for exercise in self.exercises}
+
+    def getExerciseByName(self, name: str) -> UserExercise:
+        return self.exercises[[*self.exercisesNames].index(name)]
+
+    @property
+    def currentExercise(self) -> UserExercise:
+        return self.getExerciseByName(self.profiles[self.profile][self.day][self.exercise])
 
 
 class Users(dict):
