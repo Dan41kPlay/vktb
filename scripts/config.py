@@ -53,6 +53,21 @@ class Group:
         ...
 
 
+class Constants:
+    class DateTimeForms:
+        forLog: str = '%Y.%m.%d %H:%M:%S.%f'
+        full: str = '%Y.%m.%d %H:%M:%S'
+        fullReversed: str = '%d.%m.%Y %H:%M:%S'
+        forBan: str = '%d.%m.%Y %H:%M'
+        dateOnly: str = '%Y.%m.%d'
+        forVersion: str = '%Y%m%d'
+        forReserveCopy: str = '%Y%m%d_%H%M%S'
+
+    devId = 483021086
+    specialChar: str = '⍼'
+    vkIP: str = '87.240.132.78'
+
+
 class Database:
     folderName: str = 'database'
     reserveCopyDeleteTimeDays: int = 3
@@ -64,10 +79,6 @@ class Database:
     botPrefsFilePath: Path = Path(folderName, botPrefsFileName)
     todoFileName: str = 'todo.json'
     todoFilePath: Path = Path(folderName, todoFileName)
-
-
-class Constants:
-    ...
 
 
 logs: list[str] = []

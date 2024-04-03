@@ -23,7 +23,7 @@ __all__ = ['botPrefs', 'DictLikeClass', 'BotPrefs', 'VersionInfo', 'Users', 'Bas
 
 @dataclass
 class VersionInfo:
-    full: str = f'1.0.0indev05.00 (000000.0-0500.{datetime.now():{Constants.DateTimeForms.forVersion}})'
+    full: str = f'1.0.0indev06.00 (000000.0-0600.{datetime.now():{Constants.DateTimeForms.forVersion}})'
     name: str = 'Release'
     changelog: str = (
         '\n\n❕1.0.0r'
