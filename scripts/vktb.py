@@ -118,6 +118,7 @@ def main():
                 case 'переименовать':
                     message = f'Введите новое название профиля {user.currentProfileName!r}.'
                 case 'удалить':
+                    kb = 'main'
                     del user.profiles[user.profile], user.profileNames[user.profile]
                     user.profile = 0
                     message = f'Профиль {user.currentProfileName!r} удалён.'
@@ -135,9 +136,7 @@ def main():
                             user.profileNames.append(responseDefault)
                             message = f'Новый профиль {responseDefault!r} добавлен.'
                         case 'Переименовать':
-                            if responseDefault in {*user.profileNames}:
-                                message = 'Профиль с таким именем уже есть!'
-                                return
+                            message = f'Профиль {user.currentProfileName!r} переименован в {responseDefault!r}.'
                             user.profileNames[user.profile] = responseDefault
 
         try:
