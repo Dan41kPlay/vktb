@@ -64,15 +64,6 @@ def main():
                     f'Unable to send message to user '
                     f'{self.getName(name_form='full', with_id=True)} without their permission.')
 
-        def update(self, user_info: dict[str, Any], update_at_JSON: bool = True) -> None:
-            self.firstName = user_info['first_name']
-            self.lastName = user_info['last_name']
-            self.gender = user_info['sex']
-            if update_at_JSON:
-                updateAtJSON()
-
-            log('info', f'Updated user {self.getName(name_form='full', with_id=True)}', 2)
-
         def getName(self, *,
                     name_form: Literal['full', 'short'] = 'short',
                     name_case: Literal['nom', 'gen', 'dat', 'acc', 'ins', 'abl'] = 'nom',
@@ -95,7 +86,7 @@ def main():
     vk = VkApi(token=group.tokenGroup, api_version=botPrefs.apiVersion)
     vkApi = vk.get_api()
     if None in {group.title, group.name}:
-        groupInfo = vkApi.groups.getById(group_id=group.id)['groups'][0]
+        groupInfo = vkApi.groups.getById(group_id=group.id)[0]
         if group.title is None:
             group.title = groupInfo['name']
         if group.name is None:
@@ -209,61 +200,11 @@ def main():
 
         Thread(target=postUpdateMessage, name='Update message handler').start()
 
-    def updateDatabase() -> None:
-        def updateDatabase() -> None:
-
-            def getUsersInfo(users_info: dict) -> None:
-                for userIdsPart in batched(userIds, 1000):
-                    users_info |= {userInfo['id']: userInfo for userInfo in vkApi.users.get(user_ids=userIdsPart, fields=('sex',))}
-                log('info', 'Got users info')
-
-            userIds: tuple[int] = *map(int, (*users,)),
-            usersInfo: dict = {}  # TODO: add type annotation according to vk api docs
-            getUsersInfo(usersInfo)
-            if ASYNC_DATABASE_UPDATE:
-                threadsStartJoin(Thread(
-                    target=updateUser.update,
-                    args=(
-                        usersInfo[updateUser.id],
-                        False
-                    ),
-                    name='User updater'
-                ) for updateUser in users.values() if updateUser.id in {*usersInfo})
-            else:
-                for updateUser in users.values():
-                    if updateUser.id not in {*usersInfo}:
-                        continue
-                    updateUser.update(
-                        usersInfo[updateUser.id],
-                        False
-                    )
-            updateAtJSON()
-            log('info', 'Updated database')
-
-        decideAsync(ASYNC_DATABASE_UPDATE, updateDatabase, 'Database updater')
-
-    def addUser(user_id: int, update_at_JSON: bool = True) -> None:
+    def addUser(user_id: int) -> None:
         if (user_id_str := str(user_id)) not in {*users}:
             users.update({user_id_str: User(id=user_id)})
-        users[user_id_str].update(
-            vkApi.users.get(user_ids=(user_id,), fields=('sex',))[0],
-            update_at_JSON
-        )
 
         log('info', f'Added user {users[user_id_str].getName(with_id=True)}', 2)
-
-    def sendMailing(message: str) -> None:
-        userIds = *(userMailing.id for userMailing in users.values() if userMailing.settings.sendMailing and not userMailing.banned),
-        threadsStartJoin(Thread(
-            target=vkApi.messages.send,
-            kwargs={
-                'peer_ids': userIdsPart,
-                'message': message,
-                'random_id': 0
-            },
-            name='Mailing sender'
-        ) for userIdsPart in batched(userIds, 100))
-        log('info', f'Mailing with text\n{message}\nsuccessfully sent.')
 
     def updateBotStatus(status: bool = True, async_: bool = True) -> None:
         def updateBotStatus() -> None:
@@ -295,15 +236,15 @@ def main():
                 if not one_time:
                     updateReserveCopyThread.join()
                 while True:
-                    #try:
+                    try:
                         users.toFile()
                         botPrefs.toFile(Database.botPrefsFilePath)
                         log('info', 'Saved database files')
                         if one_time:
                             break
                         sleep(delaySeconds)
-                    #except Exception:
-                        #log('error', 'Unable to save JSON files')
+                    except Exception:
+                        log('error', 'Unable to save JSON files')
                 updateReserveCopyThread.join()
             except Exception:
                 log('error', 'Unable to save JSON files')
@@ -340,8 +281,6 @@ def main():
                 log('info', 'Unread messages were answered')
         Thread(target=respondToUnreadMessages, name='Unread messages answerer').start()
 
-    if UPDATE_DATABASE_ON_START:
-        updateDatabase()
     respondToUnreadMessages()
     if not SKIP_UPDATES:
         if group.tokenUser and botPrefs.lastVersion.version != versionInfo.full and POST_UPDATE_MESSAGE:
@@ -362,8 +301,6 @@ def main():
                     pass
                 users[str(botPrefs.devId)].sendMessage(message=f'❗Произошла ошибка:\n{exception}')
                 log('error', str(exception))
-                if UPDATE_DATABASE_ON_LISTEN_ERROR:
-                    updateDatabase()
     finally:
         log('info', 'Exiting...')
         updateAtJSON(async_=False)
