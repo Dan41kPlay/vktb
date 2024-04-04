@@ -95,7 +95,7 @@ def main():
     vk = VkApi(token=group.tokenGroup, api_version=botPrefs.apiVersion)
     vkApi = vk.get_api()
     if None in {group.title, group.name}:
-        groupInfo = vkApi.groups.getById(group_id=group.id)[0]
+        groupInfo = vkApi.groups.getById(group_id=group.id)['groups'][0]
         if group.title is None:
             group.title = groupInfo['name']
         if group.name is None:
@@ -152,14 +152,14 @@ def main():
                     response = responseDefault.lower()
                     if not response or response[0] == ',':
                         return
-                    log('info', f'{user.getName(name_form='full', as_hyperlink=False, with_id=True, no_nick_name_replace='full')} '
+                    log('info', f'{user.getName(name_form='full', with_id=True)} '
                                 f'messaged:\n{responseDefault}', 1)
                     onMessage()
                     if not message:
                         message = ('❗Вы ввели неизвестную команду. '
                                    'Если у вас пропала клавиатура бота, нажмите кнопку для её открытия справа от поля ввода сообщения или напишите "Начать".')
-                    user.lastMessage.text = responseDefault
-            if kb != 'last' and kb not in Constants.inlineKeyboards or not user.settings.inlineKeyboards:
+                    user.lastMessage = responseDefault
+            if kb != 'last' and kb not in Constants.inlineKeyboards:
                 user.lastKeyboard = kb
             timerEnd = perf_counter()
             user.sendMessage(kb, message, timerEnd - timerStart)
@@ -169,10 +169,7 @@ def main():
             user.sendMessage(
                 'sendBugReport',
                 f'❗В работе бота произошла непредвиденная ошибка при обработке сообщения, и сообщение с отчётом об ошибке было отправлено разработчику. '
-                f'Надеемся, такого больше не повторится.'
-                f'{f'\n❕Если такое повторяется регулярно, сообщите об ошибке по кнопке ниже и получите вознаграждение до '
-                   f'{botPrefs.bonuses.topics.bugReport.amount:_} {botPrefs.currency.name}. Не злоупотребляйте этим!'
-                   if botPrefs.topicsEnabled and botPrefs.bonuses.topics.bugReport.enabled else ''}',
+                f'Надеемся, такого больше не повторится.',
                 0)
             users[str(botPrefs.devId)].sendMessage(message=f'{format_exc()}User: {user.getName(with_id=True)}')
 
@@ -248,15 +245,12 @@ def main():
     def addUser(user_id: int, update_at_JSON: bool = True) -> None:
         if (user_id_str := str(user_id)) not in {*users}:
             users.update({user_id_str: User(id=user_id)})
-            users[user_id_str].fillValues()
         users[user_id_str].update(
             vkApi.users.get(user_ids=(user_id,), fields=('sex',))[0],
-            users[user_id_str].isMember(group.id),
-            not vkApi.messages.getConversationsById(peer_ids=(user_id,))['items'][0]['can_write']['allowed'],
             update_at_JSON
         )
 
-        log('info', f'Added user {users[user_id_str].getName(as_hyperlink=False, with_id=True, no_nick_name_replace='full')}', 2)
+        log('info', f'Added user {users[user_id_str].getName(with_id=True)}', 2)
 
     def sendMailing(message: str) -> None:
         userIds = *(userMailing.id for userMailing in users.values() if userMailing.settings.sendMailing and not userMailing.banned),
@@ -278,7 +272,6 @@ def main():
                     newDescription = (f'Бот работает {'стабильно.' if versionInfo.full.split()[0][-1] == 'r' else
                                                       'в тестовом режиме. Могут возникать ошибки.'}' if WORKING else
                                       'Бот выключен и доступен только для админов.')
-                    newDescription += ' О найденных багах сообщайте в обсуждении ниже.' if botPrefs.topicsEnabled else ''
                     switchOnlineStatus = vkApi.groups.enableOnline
                 else:
                     newDescription = 'Бот временно выключен.'
@@ -302,15 +295,15 @@ def main():
                 if not one_time:
                     updateReserveCopyThread.join()
                 while True:
-                    try:
+                    #try:
                         users.toFile()
                         botPrefs.toFile(Database.botPrefsFilePath)
                         log('info', 'Saved database files')
                         if one_time:
                             break
                         sleep(delaySeconds)
-                    except Exception:
-                        log('error', 'Unable to save JSON files')
+                    #except Exception:
+                        #log('error', 'Unable to save JSON files')
                 updateReserveCopyThread.join()
             except Exception:
                 log('error', 'Unable to save JSON files')
@@ -389,11 +382,11 @@ def preMain() -> None:
         windll.user32.MessageBoxW(0, 'No Internet connection!', 'Error!', 0, 0x00001000)
         exit()
     while True:
-        try:
+        #try:
             main()
-        except Exception as exception:
-            log('error', exception)
-            log('info', 'Critical error occurred, restarting bot...')
+        #except Exception as exception:
+            #log('error', exception)
+            #log('info', 'Critical error occurred, restarting bot...')
 
 
 if __name__ == '__main__':

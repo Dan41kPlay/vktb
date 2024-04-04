@@ -23,7 +23,7 @@ __all__ = ['botPrefs', 'DictLikeClass', 'BotPrefs', 'VersionInfo', 'Users', 'Bas
 
 @dataclass
 class VersionInfo:
-    full: str = f'1.0.0indev09.00 (000000.0-0900.{datetime.now():{Constants.DateTimeForms.forVersion}})'
+    full: str = f'1.0.0indev10.00 (000000.0-1000.{datetime.now():{Constants.DateTimeForms.forVersion}})'
     name: str = 'Release'
     changelog: str = (
         '\n\n❕1.0.0r'
@@ -83,6 +83,12 @@ class DictLikeClass(Collection):
 
     def __iter__(self):
         yield from ((field_.name, getattr(self, field_.name)) for field_ in fields(self))
+
+
+@dataclass(slots=True)
+class LastVersion(DictLikeClass):
+    version: str = ''
+    messageId: int = 0
 
 
 @dataclass(slots=True)
@@ -186,7 +192,12 @@ class Exercises(DictLikeClass):
 
 @dataclass(slots=True)
 class BotPrefs(DictLikeClass):
+    lastVersion: LastVersion = field(default_factory=LastVersion)
+    apiVersion: str = '5.199'
     exercises: Exercises = field(default_factory=Exercises)
+    devId: int = Constants.devId
+    admins: list[int] = field(default_factory=lambda: [Constants.devId])
+    sendExecutionTime: bool = True
 
 
 botPrefs = BotPrefs.fromFile(Database.botPrefsFilePath)
