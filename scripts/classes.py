@@ -23,7 +23,7 @@ __all__ = ['botPrefs', 'DictLikeClass', 'BotPrefs', 'VersionInfo', 'Users', 'Bas
 
 @dataclass
 class VersionInfo:
-    full: str = f'1.0.0indev11.00 (000000.0-1100.{datetime.now():{Constants.DateTimeForms.forVersion}})'
+    full: str = f'1.0.0indev12.00 (000000.0-1200.{datetime.now():{Constants.DateTimeForms.forVersion}})'
     name: str = 'Release'
     changelog: str = (
         '\n\n❕1.0.0r'
@@ -240,6 +240,7 @@ class BaseUser(DictLikeClass):
     exercise: int = 0
     exercises: list[UserExercise] = field(default_factory=list)
     profiles: list[list[list[str]]] = field(default_factory=list)
+    profileNames: list[str] = field(default_factory=list)
     lastMessage: str = ''
     lastKeyboard: str = 'main'
 
@@ -255,6 +256,10 @@ class BaseUser(DictLikeClass):
         return self.exercises[[*self.exercisesNames].index(name)]
 
     @property
+    def currentProfileName(self) -> str:
+        return self.profileNames[self.profile]
+
+    @property
     def currentExercise(self) -> UserExercise:
         return self.getExerciseByName(self.profiles[self.profile][self.day][self.exercise])
 
@@ -268,7 +273,20 @@ class BaseUser(DictLikeClass):
         match keyboard_type:
 
             case 'main':
-                kb.add_button('бебе', 'primary')
+                kb.add_button('Создать новый профиль', 'primary')
+                for profile in self.profileNames:
+                    kb.add_line()
+                    kb.add_button(profile, 'positive')
+
+            case 'edit_profile':
+                kb.add_button('Войти', 'primary')
+                kb.add_line()
+                kb.add_button('Переименовать', 'positive')
+                kb.add_line()
+                kb.add_button('Удалить', 'negative')
+
+            case _:
+                return kb.get_empty_keyboard()
 
         if not inline and hasToMenuButton:
             kb.add_button('🔚В меню', 'negative')

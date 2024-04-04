@@ -112,9 +112,34 @@ def main():
             match response:
                 case 'start' | 'начать':
                     kb = 'main'
-                    message = 'привет'
-                case 'бебе':
-                    message = 'баба'
+                    message = 'Привет'
+                case 'создать новый профиль':
+                    message = 'Введите имя нового профиля.'
+                case 'переименовать':
+                    message = f'Введите новое название профиля {user.currentProfileName!r}.'
+                case 'удалить':
+                    del user.profiles[user.profile], user.profileNames[user.profile]
+                    user.profile = 0
+                    message = f'Профиль {user.currentProfileName!r} удалён.'
+                case _:
+                    if responseDefault in {*user.profileNames}:
+                        kb = 'edit_profile'
+                        user.profile = user.profileNames.index(responseDefault)
+                        message = f'Выберите действие с профилем {responseDefault!r}.'
+                    match user.lastMessage:
+                        case 'Создать новый профиль':
+                            if responseDefault in {*user.profileNames}:
+                                message = 'Профиль с таким именем уже существует.'
+                                return
+                            user.profiles.append([])
+                            user.profileNames.append(responseDefault)
+                            message = f'Новый профиль {responseDefault!r} добавлен.'
+                        case 'Переименовать':
+                            if responseDefault in {*user.profileNames}:
+                                message = 'Профиль с таким именем уже есть!'
+                                return
+                            user.profileNames[user.profile] = responseDefault
+
         try:
             log('info', f'New event: {str(vk_event.type).split('.')[1].replace('_', ' ').lower()}')
         except IndexError:
@@ -319,11 +344,11 @@ def preMain() -> None:
         windll.user32.MessageBoxW(0, 'No Internet connection!', 'Error!', 0, 0x00001000)
         exit()
     while True:
-        #try:
+        try:
             main()
-        #except Exception as exception:
-            #log('error', exception)
-            #log('info', 'Critical error occurred, restarting bot...')
+        except Exception as exception:
+            log('error', exception)
+            log('info', 'Critical error occurred, restarting bot...')
 
 
 if __name__ == '__main__':
