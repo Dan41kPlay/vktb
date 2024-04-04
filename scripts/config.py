@@ -30,7 +30,7 @@ def decideAsync(condition: bool, target: Callable, thread_name_if_async: str) ->
 class Group:
     class Test:
         tokenGroup: str = 'vk1.a.9PjuLuAj1EjKm7DuORO97apb8I2SurvSuGMTIf8oLZGERTWrKgP3A-oycjs-PPDWcDqmQojjZNSPBj9Sl0YSqtAI2CqRg0pPjvMFro4ihFiU0J4vDM5EauLcSmhyul9qRiG_i5KVeEC8BTB-SUXS_6hSbpTO5hlyO4Kg1fDkx0TSoDShXO5-jl0-JsgycVs5EFu_H-Lu0elTs41KcZD_gw'
-        tokenUser: str = ''  # https://oauth.vk.com/authorize?client_id=8049194&scope=board,wall,offline&redirect_uri=https://oauth.vk.com/blank.html&display=page&v=5.131&response_type=token
+        tokenUser: str = 'vk1.a.GN0B2_n_Rvl_VDWXRz7aNI5Hfqx7h5SigFNfRg3Ub1SDYUJ8YM9m6MtFvlG4XSyjb_FdJ5xp-ivHEvht3pwSO6jIxGJdMSSJRHCzlg328_dFIHa5OjwFFsgD-bkaikmT8W4LRdGmrwYe875g4E9ofTQ7EBxR2EC97kHyRvbHrNiU_1HsWrmh_L-r6oveLEND'  # https://oauth.vk.com/authorize?client_id=8049194&scope=board,wall,offline&redirect_uri=https://oauth.vk.com/blank.html&display=page&v=5.199&response_type=token
         id: int = 200655850
         name: Optional[str] = None
         title: Optional[str] = None
@@ -52,6 +52,7 @@ class Constants:
     devId = 483021086
     specialChar: str = '⍼'
     vkIP: str = '87.240.132.78'
+    commands: str = ''
 
     inlineKeyboards: set[str] = set()
     keyboardsWithToMenuButton: set[str] = set()

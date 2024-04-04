@@ -111,8 +111,19 @@ def main():
 
     def onEvent(vk_event: VkBotEvent) -> None:
         def onMessage() -> None:
-            ...
-
+            nonlocal response, responseDefault, responseAdditional, message, kb
+            if userId in {*botPrefs.admins} and response[0] == '.':
+                cmdMsg: list[bool | float | int | str] = responseDefault.split(' ')
+                cmdSyntax = cmds[0] if (cmds := [command for command in Constants.commands.splitlines() if cmdMsg[0] in command]) else ''
+            if not WORKING and userId not in {*botPrefs.admins}:
+                message = '❕Бот временно выключен.'
+                return
+            match response:
+                case 'start' | 'начать':
+                    kb = 'main'
+                    message = 'привет'
+                case 'бебе':
+                    message = 'баба'
         try:
             log('info', f'New event: {str(vk_event.type).split('.')[1].replace('_', ' ').lower()}')
         except IndexError:
@@ -148,12 +159,10 @@ def main():
                         message = ('❗Вы ввели неизвестную команду. '
                                    'Если у вас пропала клавиатура бота, нажмите кнопку для её открытия справа от поля ввода сообщения или напишите "Начать".')
                     user.lastMessage.text = responseDefault
-            user.balance = round(user.balance)
             if kb != 'last' and kb not in Constants.inlineKeyboards or not user.settings.inlineKeyboards:
                 user.lastKeyboard = kb
             timerEnd = perf_counter()
             user.sendMessage(kb, message, timerEnd - timerStart)
-            user.updateAchievements()
             users[userIdStr] = user
 
         except Exception:
