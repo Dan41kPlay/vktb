@@ -135,11 +135,11 @@ def main():
                     kb = 'exercises'
                     message = 'Вы попали в меню упражнений. Здесь можно настроить количество подходов, повторений, вес упражнения и добавить к нему заметку.'
                 case _:
-                    if responseDefault in {*user.profileNames}:
+                    if user.lastKeyboard == 'profiles' and responseDefault in {*user.profileNames}:
                         kb = 'profile_actions'
                         user.profile = user.profileNames.index(responseDefault)
                         message = f'Выберите действие с профилем {responseDefault!r}.'
-                    elif responseDefault in {*botPrefs.exercisesNamesRu}:
+                    elif user.lastKeyboard == 'exercises' and responseDefault in {*botPrefs.exercisesNamesRu}:
                         kb = 'exercise_actions'
                         user.exerciseEditing = [*botPrefs.exercisesNamesRu].index(responseDefault)
                         message = f'Выберите действие с упражнением {responseDefault!r}.'

@@ -23,7 +23,7 @@ __all__ = ['botPrefs', 'DictLikeClass', 'BotPrefs', 'VersionInfo', 'Users', 'Bas
 
 @dataclass
 class VersionInfo:
-    full: str = f'1.0.0indev14.00 (000000.0-1400.{datetime.now():{Constants.DateTimeForms.forVersion}})'
+    full: str = f'1.0.0indev15.00 (000000.0-1500.{datetime.now():{Constants.DateTimeForms.forVersion}})'
     name: str = 'Release'
     changelog: str = (
         '\n\n❕1.0.0r'
@@ -308,16 +308,16 @@ class BaseUser(DictLikeClass):
                 kb.add_button('Удалить', 'negative')
 
             case 'exercise_actions':
-                kb.add_button('Вес', 'primary')
+                kb.add_button('[Р] Подходы', 'negative')
+                kb.add_button('[О] Подходы', 'positive')
+                kb.add_line()
+                kb.add_button('[Р] Повторения', 'negative')
+                kb.add_button('[О] Повторения', 'positive')
+                kb.add_line()
+                kb.add_button('[Р] Вес', 'negative')
+                kb.add_button('[О] Вес', 'positive')
+                kb.add_line()
                 kb.add_button('Заметка', 'secondary')
-                kb.add_line()
-                kb.add_button('Разминочные подходы', 'negative')
-                kb.add_line()
-                kb.add_button('Основные подходы', 'positive')
-                kb.add_line()
-                kb.add_button('Повторения в разм. подходы', 'negative')
-                kb.add_line()
-                kb.add_button('Повторения в осн. подходы', 'positive')
 
             case _:
                 return kb.get_empty_keyboard()
