@@ -106,6 +106,7 @@ def main():
             if userId in {*botPrefs.admins} and response[0] == '.':
                 cmdMsg: list[bool | float | int | str] = responseDefault.split(' ')
                 cmdSyntax = cmds[0] if (cmds := [command for command in Constants.commands.splitlines() if cmdMsg[0] in command]) else ''
+                message = 'NotImplemented'
             if not WORKING and userId not in {*botPrefs.admins}:
                 message = '❕Бот временно выключен.'
                 return
@@ -113,20 +114,35 @@ def main():
                 case 'start' | 'начать':
                     kb = 'main'
                     message = 'Привет'
+                case 'назад':
+                    match user.lastKeyboard:
+                        case _:
+                            kb = 'main'
+                            message = 'Вы вернулись в главное меню.'
+                case 'профили':
+                    kb = 'profiles'
+                    message = 'Вы попали в меню профилей. Здесь в них можно войти, их можно добавлять, редактировать и удалять.'
                 case 'создать новый профиль':
                     message = 'Введите имя нового профиля.'
                 case 'переименовать':
                     message = f'Введите новое название профиля {user.currentProfileName!r}.'
                 case 'удалить':
-                    kb = 'main'
-                    del user.profiles[user.profile], user.profileNames[user.profile]
-                    user.profile = 0
+                    kb = 'profiles'
                     message = f'Профиль {user.currentProfileName!r} удалён.'
+                    del user.profileNames[user.profile], user.profiles[user.profile]
+                    user.profile = 0
+                case 'упражнения':
+                    kb = 'exercises'
+                    message = 'Вы попали в меню упражнений. Здесь можно настроить количество подходов, повторений, вес упражнения и добавить к нему заметку.'
                 case _:
                     if responseDefault in {*user.profileNames}:
-                        kb = 'edit_profile'
+                        kb = 'profile_actions'
                         user.profile = user.profileNames.index(responseDefault)
                         message = f'Выберите действие с профилем {responseDefault!r}.'
+                    elif responseDefault in {*botPrefs.exercisesNamesRu}:
+                        kb = 'exercise_actions'
+                        user.exerciseEditing = [*botPrefs.exercisesNamesRu].index(responseDefault)
+                        message = f'Выберите действие с упражнением {responseDefault!r}.'
                     match user.lastMessage:
                         case 'Создать новый профиль':
                             if responseDefault in {*user.profileNames}:
@@ -299,7 +315,7 @@ def main():
             for unreadConversation in unreadConversations:
                 if (unreadUserIdStr := str(unreadUserId := unreadConversation['conversation']['peer']['id'])) not in {*users}:
                     addUser(unreadUserId)
-                users[unreadUserIdStr].sendMessage(message='❕Когда вы написали боту в последний раз, он был выключен и не отвечал на ваши сообщения.'
+                users[unreadUserIdStr].sendMessage(message='❕Когда вы написали боту в последний раз, он был выключен и не отвечал на ваши сообщения. '
                                                            'Теперь он снова работает.')
             if unreadConversations:
                 log('info', 'Unread messages were answered')

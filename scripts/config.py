@@ -51,7 +51,7 @@ class Constants:
     vkIP: str = '87.240.132.78'
     commands: str = ''
 
-    inlineKeyboards: set[str] = {'edit_profile'}
+    inlineKeyboards: set[str] = {'profile_actions', 'exercise_actions'}
     keyboardsWithToMenuButton: set[str] = set()
 
 

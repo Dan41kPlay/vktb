@@ -23,7 +23,7 @@ __all__ = ['botPrefs', 'DictLikeClass', 'BotPrefs', 'VersionInfo', 'Users', 'Bas
 
 @dataclass
 class VersionInfo:
-    full: str = f'1.0.0indev13.00 (000000.0-1300.{datetime.now():{Constants.DateTimeForms.forVersion}})'
+    full: str = f'1.0.0indev14.00 (000000.0-1400.{datetime.now():{Constants.DateTimeForms.forVersion}})'
     name: str = 'Release'
     changelog: str = (
         '\n\n❕1.0.0r'
@@ -177,8 +177,8 @@ class TractionToBelt(Exercise):
 
 @dataclass(slots=True)
 class Exercises(DictLikeClass):
-    benchPresDumbbellsLying: BenchPressDumbbellsLying = field(default_factory=BenchPressDumbbellsLying)
-    benchPresDumbbellSitting: BenchPressDumbbellsSitting = field(default_factory=BenchPressDumbbellsSitting)
+    benchPressDumbbellsLying: BenchPressDumbbellsLying = field(default_factory=BenchPressDumbbellsLying)
+    benchPressDumbbellSitting: BenchPressDumbbellsSitting = field(default_factory=BenchPressDumbbellsSitting)
     benchPressLying: BenchPressLying = field(default_factory=BenchPressLying)
     bendingHandsWithRod: BendingHandsWithRod = field(default_factory=BendingHandsWithRod)
     breedingDumbbellsLying: BreedingDumbbellsLying = field(default_factory=BreedingDumbbellsLying)
@@ -198,6 +198,14 @@ class BotPrefs(DictLikeClass):
     devId: int = Constants.devId
     admins: list[int] = field(default_factory=lambda: [Constants.devId])
     sendExecutionTime: bool = True
+
+    @property
+    def exercisesNames(self) -> set[str]:
+        return {exerciseName for exerciseName, _ in self.exercises}
+
+    @property
+    def exercisesNamesRu(self) -> set[str]:
+        return {exercise.name for _, exercise in self.exercises}
 
 
 botPrefs = BotPrefs.fromFile(Database.botPrefsFilePath)
@@ -238,6 +246,7 @@ class BaseUser(DictLikeClass):
     profile: int = 0
     day: int = 0
     exercise: int = 0
+    exerciseEditing: int = 0
     exercises: list[UserExercise] = field(default_factory=list)
     profiles: list[list[list[str]]] = field(default_factory=list)
     profileNames: list[str] = field(default_factory=list)
@@ -273,17 +282,42 @@ class BaseUser(DictLikeClass):
         match keyboard_type:
 
             case 'main':
+                kb.add_button('Профили', 'primary')
+                kb.add_button('Упражнения', 'secondary')
+
+            case 'profiles':
                 kb.add_button('Создать новый профиль', 'primary')
                 for profile in self.profileNames:
                     kb.add_line()
                     kb.add_button(profile, 'positive')
+                kb.add_line()
+                kb.add_button('Назад', 'negative')
 
-            case 'edit_profile':
+            case 'exercises':
+                for counter, (_, exercise) in enumerate(botPrefs.exercises):
+                    kb.add_button(exercise.name, 'positive')
+                    if counter % 2:
+                        kb.add_line()
+                kb.add_button('Назад', 'negative')
+
+            case 'profile_actions':
                 kb.add_button('Войти', 'primary')
                 kb.add_line()
                 kb.add_button('Переименовать', 'positive')
                 kb.add_line()
                 kb.add_button('Удалить', 'negative')
+
+            case 'exercise_actions':
+                kb.add_button('Вес', 'primary')
+                kb.add_button('Заметка', 'secondary')
+                kb.add_line()
+                kb.add_button('Разминочные подходы', 'negative')
+                kb.add_line()
+                kb.add_button('Основные подходы', 'positive')
+                kb.add_line()
+                kb.add_button('Повторения в разм. подходы', 'negative')
+                kb.add_line()
+                kb.add_button('Повторения в осн. подходы', 'positive')
 
             case _:
                 return kb.get_empty_keyboard()
