@@ -35,7 +35,7 @@ def main():
     class User(BaseUser):
         def sendMessage(self,
                         keyboard: str = 'last', message: Any = None,
-                        attachments: Any = None, time: float = 0.,
+                        attachment: Any = None, time: float = 0.,
                         max_message_length: int = 4096) -> None:
             if not message:
                 return
