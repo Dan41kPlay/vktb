@@ -143,18 +143,24 @@ def main():
                 case 'добавить день':
                     user.profiles[user.profile].append([])
                     message = 'Новый день добавлен.'
+                case 'добавить упражнение':
+                    message = 'Выберите упражнение для добавления.'
                 case 'упражнения':
-                    kb = 'exercises'
+                    kb = 'exercise_list'
                     message = 'Вы попали в меню упражнений. Здесь можно настроить количество подходов, повторений, вес упражнения и добавить к нему заметку.'
                 case _:
-                    if user.lastKeyboard == 'profiles' and responseDefault in {*user.profileNames}:
-                        kb = 'profile_actions'
-                        user.profile = user.profileNames.index(responseDefault)
-                        message = f'Выберите действие с профилем {responseDefault!r}.'
-                    elif user.lastKeyboard == 'exercises' and responseDefault in {*botPrefs.exercisesNamesRu}:
+                    if user.lastKeyboard == 'days' and responseDefault in {f'День {day}' for day in range(len(user.currentProfile))}:
+                        kb = 'exercises'
+                        user.day = int(response.split()[1])
+                        message = f'Вы попали в список упражнений {user.day}-го дня.'
+                    elif user.lastKeyboard == 'exercise_list' and responseDefault in {*botPrefs.exercisesNamesRu}:
                         kb = 'exercise_actions'
                         user.exerciseEditing = [*botPrefs.exercisesNamesRu].index(responseDefault)
                         message = f'Выберите действие с упражнением {responseDefault!r}.'
+                    elif user.lastKeyboard == 'profiles' and responseDefault in {*user.profileNames}:
+                        kb = 'profile_actions'
+                        user.profile = user.profileNames.index(responseDefault)
+                        message = f'Выберите действие с профилем {responseDefault!r}.'
                     match user.lastMessage:
                         case 'Создать новый профиль':
                             if responseDefault in {*user.profileNames}:
