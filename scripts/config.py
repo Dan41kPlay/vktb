@@ -52,7 +52,7 @@ class Constants:
     commands: str = ''
 
     inlineKeyboards: set[str] = {'profile_actions', 'exercise_actions'}
-    keyboardsWithToMenuButton: set[str] = set()
+    keyboardsWithToMenuButton: set[str] = {'days'}
 
 
 class Database:

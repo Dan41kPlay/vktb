@@ -23,7 +23,7 @@ __all__ = ['botPrefs', 'DictLikeClass', 'BotPrefs', 'VersionInfo', 'Users', 'Bas
 
 @dataclass
 class VersionInfo:
-    full: str = f'1.0.0indev15.00 (000000.0-1500.{datetime.now():{Constants.DateTimeForms.forVersion}})'
+    full: str = f'1.0.0indev16.00 (000000.0-1600.{datetime.now():{Constants.DateTimeForms.forVersion}})'
     name: str = 'Release'
     changelog: str = (
         '\n\n❕1.0.0r'
@@ -265,6 +265,10 @@ class BaseUser(DictLikeClass):
         return self.exercises[[*self.exercisesNames].index(name)]
 
     @property
+    def currentProfile(self) -> list[list[str]]:
+        return self.profiles[self.profile]
+
+    @property
     def currentProfileName(self) -> str:
         return self.profileNames[self.profile]
 
@@ -298,6 +302,7 @@ class BaseUser(DictLikeClass):
                     kb.add_button(exercise.name, 'positive')
                     if counter % 2:
                         kb.add_line()
+                kb.add_line()
                 kb.add_button('Назад', 'negative')
 
             case 'profile_actions':
@@ -318,6 +323,15 @@ class BaseUser(DictLikeClass):
                 kb.add_button('[О] Вес', 'positive')
                 kb.add_line()
                 kb.add_button('Заметка', 'secondary')
+
+            case 'days':
+                kb.add_button('Добавить день', 'primary')
+                for day in range(len(self.currentProfile)):
+                    if day % 2:
+                        kb.add_line()
+                    kb.add_button(f'День {day + 1}', 'positive')
+                kb.add_line()
+                kb.add_button('Назад', 'negative')
 
             case _:
                 return kb.get_empty_keyboard()

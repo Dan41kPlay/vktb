@@ -116,14 +116,23 @@ def main():
                     message = 'Привет'
                 case 'назад':
                     match user.lastKeyboard:
+                        case 'days':
+                            kb = 'profiles'
+                            message = 'Вы вернулись в меню профилей.'
                         case _:
                             kb = 'main'
                             message = 'Вы вернулись в главное меню.'
+                case '🔚в меню':
+                    kb = 'main'
+                    message = 'Вы вернулись в главное меню.'
                 case 'профили':
                     kb = 'profiles'
                     message = 'Вы попали в меню профилей. Здесь в них можно войти, их можно добавлять, редактировать и удалять.'
                 case 'создать новый профиль':
                     message = 'Введите имя нового профиля.'
+                case 'войти':
+                    kb = 'days'
+                    message = 'Выберите день тренировки, добавьте новый или измените существующий.'
                 case 'переименовать':
                     message = f'Введите новое название профиля {user.currentProfileName!r}.'
                 case 'удалить':
@@ -131,6 +140,9 @@ def main():
                     message = f'Профиль {user.currentProfileName!r} удалён.'
                     del user.profileNames[user.profile], user.profiles[user.profile]
                     user.profile = 0
+                case 'добавить день':
+                    user.profiles[user.profile].append([])
+                    message = 'Новый день добавлен.'
                 case 'упражнения':
                     kb = 'exercises'
                     message = 'Вы попали в меню упражнений. Здесь можно настроить количество подходов, повторений, вес упражнения и добавить к нему заметку.'
@@ -193,15 +205,14 @@ def main():
             if kb != 'last' and kb not in Constants.inlineKeyboards:
                 user.lastKeyboard = kb
             timerEnd = perf_counter()
-            user.sendMessage(kb, message, timerEnd - timerStart)
+            user.sendMessage(kb, message, time=timerEnd - timerStart)
             users[userIdStr] = user
 
         except Exception:
             user.sendMessage(
                 'sendBugReport',
                 f'❗В работе бота произошла непредвиденная ошибка при обработке сообщения, и сообщение с отчётом об ошибке было отправлено разработчику. '
-                f'Надеемся, такого больше не повторится.',
-                0)
+                f'Надеемся, такого больше не повторится.')
             users[str(botPrefs.devId)].sendMessage(message=f'{format_exc()}User: {user.getName(with_id=True)}')
 
     def postUpdateMessage() -> None:
