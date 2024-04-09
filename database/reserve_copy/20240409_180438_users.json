@@ -20,9 +20,9 @@
         "lastName": "\u041c\u0438\u0440\u0433\u0430\u044f\u0437\u043e\u0432",
         "gender": 2,
         "profile": 0,
-        "day": 0,
+        "day": 1,
         "exercise": 0,
-        "exerciseEditing": 0,
+        "exerciseEditing": 9,
         "exercises": [],
         "profiles": [
             [
@@ -33,8 +33,8 @@
         "profileNames": [
             "\u0419\u0446\u0443\u043a\u0435\u043d\u0433"
         ],
-        "lastMessage": "\u041d\u0430\u0437\u0430\u0434",
-        "lastKeyboard": "days"
+        "lastMessage": "\u0414\u0435\u043d\u044c 1",
+        "lastKeyboard": "exercises"
     },
     "483021086": {
         "id": 483021086,
@@ -58,6 +58,6 @@
             "\u0410\u0440\u043e\u043e"
         ],
         "lastMessage": "\u041d\u0430\u0437\u0430\u0434",
-        "lastKeyboard": "main"
+        "lastKeyboard": "profiles"
     }
 }

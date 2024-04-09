@@ -25,14 +25,16 @@
         "exerciseEditing": 9,
         "exercises": [],
         "profiles": [
-            [],
+            [
+                []
+            ],
             []
         ],
         "profileNames": [
             "\u0419\u0446\u0443\u043a\u0435\u043d\u0433"
         ],
-        "lastMessage": "\u0417\u0430\u043c\u0435\u0442\u043a\u0430",
-        "lastKeyboard": "exercises"
+        "lastMessage": "\u0414\u0435\u043d\u044c 1",
+        "lastKeyboard": "days"
     },
     "483021086": {
         "id": 483021086,
@@ -45,12 +47,17 @@
         "exerciseEditing": 3,
         "exercises": [],
         "profiles": [
-            []
+            [
+                [],
+                [],
+                [],
+                []
+            ]
         ],
         "profileNames": [
             "\u0410\u0440\u043e\u043e"
         ],
         "lastMessage": "\u041d\u0430\u0437\u0430\u0434",
-        "lastKeyboard": "main"
+        "lastKeyboard": "profiles"
     }
 }

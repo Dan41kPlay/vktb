@@ -23,7 +23,7 @@ __all__ = ['botPrefs', 'DictLikeClass', 'BotPrefs', 'VersionInfo', 'Users', 'Bas
 
 @dataclass
 class VersionInfo:
-    full: str = f'1.0.0indev17.00 (000000.0-1700.{datetime.now():{Constants.DateTimeForms.forVersion}})'
+    full: str = f'1.0.0indev18.00 (000000.0-1800.{datetime.now():{Constants.DateTimeForms.forVersion}})'
     name: str = 'Release'
     changelog: str = (
         '\n\n❕1.0.0r'
@@ -214,9 +214,9 @@ _botPrefs = BotPrefs()
 
 @dataclass(slots=True)
 class Approaches(DictLikeClass):
-    amount: int
-    repetitions: int
-    weight: float
+    amount: int = 0
+    repetitions: int = 0
+    weight: float = 0
 
 
 @dataclass(slots=True)
@@ -231,10 +231,10 @@ class MainApproaches(Approaches):
 
 @dataclass(slots=True)
 class UserExercise(DictLikeClass):
-    name: str
-    warmUpApproaches: WarmUpApproaches
-    mainApproaches: MainApproaches
-    note: str
+    name: str = ''
+    warmUpApproaches: WarmUpApproaches = field(default_factory=WarmUpApproaches)
+    mainApproaches: MainApproaches = field(default_factory=MainApproaches)
+    note: str = ''
 
 
 @dataclass(slots=True)

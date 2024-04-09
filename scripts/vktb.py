@@ -119,6 +119,9 @@ def main():
                         case 'days':
                             kb = 'profiles'
                             message = 'Вы вернулись в меню профилей.'
+                        case 'exercises':
+                            kb = 'days'
+                            message = 'Вы вернулись в меню дней.'
                         case _:
                             kb = 'main'
                             message = 'Вы вернулись в главное меню.'
@@ -148,11 +151,25 @@ def main():
                 case 'упражнения':
                     kb = 'exercise_list'
                     message = 'Вы попали в меню упражнений. Здесь можно настроить количество подходов, повторений, вес упражнения и добавить к нему заметку.'
+                case '[р] подходы':
+                    message = 'Введите количество разминочных подходов.'
+                case '[о] подходы':
+                    message = 'Введите количество основных подходов.'
+                case '[р] повторения':
+                    message = 'Введите количество повторений в разминочные подходы.'
+                case '[о] повторения':
+                    message = 'Введите количество повторений в основные подходы.'
+                case '[р] вес':
+                    message = 'Введите вес в разминочные подходы.'
+                case '[о] вес':
+                    message = 'Введите вес в основные подходы.'
+                case 'заметка':
+                    message = 'Введите заметку к упражнению.'
                 case _:
-                    if user.lastKeyboard == 'days' and responseDefault in {f'День {day}' for day in range(len(user.currentProfile))}:
+                    if user.lastKeyboard == 'days' and responseDefault in {f'День {day + 1}' for day in range(len(user.currentProfile))}:
                         kb = 'exercises'
-                        user.day = int(response.split()[1])
-                        message = f'Вы попали в список упражнений {user.day}-го дня.'
+                        user.day = int(response.split()[1]) - 1
+                        message = f'Вы попали в список упражнений {user.day + 1}-го дня.'
                     elif user.lastKeyboard == 'exercise_list' and responseDefault in {*botPrefs.exercisesNamesRu}:
                         kb = 'exercise_actions'
                         user.exerciseEditing = [*botPrefs.exercisesNamesRu].index(responseDefault)
@@ -172,6 +189,51 @@ def main():
                         case 'Переименовать':
                             message = f'Профиль {user.currentProfileName!r} переименован в {responseDefault!r}.'
                             user.profileNames[user.profile] = responseDefault
+                        case '[Р] Подходы':
+                            if tryParse(response, int):
+                                user.exercises[user.exerciseEditing].warmUpApproaches.amount = int(response)
+                                message = f'Количество разминочных подходов изменено на {response}.'
+                                return
+                            responseDefault = user.lastMessage
+                            message = 'Вы ввели не целое число. Попробуйте ещё раз.'
+                        case '[О] Подходы':
+                            if tryParse(response, int):
+                                user.exercises[user.exerciseEditing].mainUpApproaches.amount = int(response)
+                                message = f'Количество основных подходов изменено на {response}.'
+                                return
+                            responseDefault = user.lastMessage
+                            message = 'Вы ввели не целое число. Попробуйте ещё раз.'
+                        case '[Р] Повторения':
+                            if tryParse(response, int):
+                                user.exercises[user.exerciseEditing].warmUpApproaches.repetitions = int(response)
+                                message = f'Количество повторений в разминочные подходы изменено на {response}.'
+                                return
+                            responseDefault = user.lastMessage
+                            message = 'Вы ввели не целое число. Попробуйте ещё раз.'
+                        case '[О] Повторения':
+                            if tryParse(response, int):
+                                user.exercises[user.exerciseEditing].mainApproaches.repetitions = int(response)
+                                message = f'Количество повторений в основные подходы изменено на {response}.'
+                                return
+                            responseDefault = user.lastMessage
+                            message = 'Вы ввели не целое число. Попробуйте ещё раз.'
+                        case '[Р] Вес':
+                            if tryParse(response, float):
+                                user.exercises[user.exerciseEditing].warmUpApproaches.weight = int(response)
+                                message = f'Вес в разминочные подходы изменён на {response}.'
+                                return
+                            responseDefault = user.lastMessage
+                            message = 'Вы ввели не число. Попробуйте ещё раз.'
+                        case '[О] Вес':
+                            if tryParse(response, float):
+                                user.exercises[user.exerciseEditing].mainApproaches.weight = int(response)
+                                message = f'Вес в основные подходы изменён на {response}.'
+                                return
+                            responseDefault = user.lastMessage
+                            message = 'Вы ввели не число. Попробуйте ещё раз.'
+                        case 'заметка':
+                            user.exercises[user.exerciseEditing].note = responseDefault
+                            message = 'Заметка добавлена.'
 
         try:
             log('info', f'New event: {str(vk_event.type).split('.')[1].replace('_', ' ').lower()}')
