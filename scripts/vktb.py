@@ -149,6 +149,10 @@ def main():
                 case 'добавить день':
                     user.profiles[user.profile].append([])
                     message = 'Новый день добавлен.'
+                case 'удалить день':
+                    del user.profiles[user.profile][user.day]
+                    message = f'{user.day + 1}-й день удалён.'
+                    user.day = 0
                 case 'добавить упражнение':
                     kb = 'add_exercise'
                     message = 'Выберите упражнение для добавления.'
@@ -171,9 +175,9 @@ def main():
                     message = 'Введите заметку к упражнению.'
                 case 'remove_exercise':
                     kb = 'exercises'
-                    user.profiles[user.profile][user.day].remove(user.exercisesNames[user.exerciseEditing])
+                    message = f'Упражнение {user.exercises[user.exerciseEditing].name!r} удалено из дня.'
+                    user.profiles[user.profile][user.day].remove(user.exercises[user.exerciseEditing].name)
                     user.exerciseEditing = 0
-                    message = 'Упражнение удалено из дня.'
                 case _:
                     if user.lastKeyboard == 'days' and responseDefault in {f'День {day + 1}' for day in range(len(user.currentProfile))}:
                         kb = 'exercises'
@@ -181,13 +185,17 @@ def main():
                         message = f'Вы попали в список упражнений {user.day + 1}-го дня.'
                     elif user.lastKeyboard == 'exercise_list' and responseDefault in {*botPrefs.exercisesNamesRu}:
                         kb = 'exercise_actions'
-                        user.exerciseEditing = [*botPrefs.exercisesNamesRu].index(responseDefault)
+                        user.exerciseEditing = botPrefs.exercisesNamesRu.index(responseDefault)
                         message = f'Выберите действие с упражнением {responseDefault!r}.'
-                    elif user.lastKeyboard in {'add_exercise', 'exercises'} and responseDefault in {*botPrefs.exercisesNamesRu}:
+                    elif user.lastKeyboard == 'add_exercise' and responseDefault in {*botPrefs.exercisesNamesRu}:
                         kb = 'exercise_actions_extended'
-                        user.exerciseEditing = [*botPrefs.exercisesNamesRu].index(responseDefault)
+                        user.exerciseEditing = botPrefs.exercisesNamesRu.index(responseDefault)
                         user.profiles[user.profile][user.day].append(responseDefault)
                         message = f'Упражнение {responseDefault!r} добавлено. Теперь вы можете сразу отредактировать его, используя кнопки ниже.'
+                    elif user.lastKeyboard == 'exercises' and responseDefault in {*botPrefs.exercisesNamesRu}:
+                        kb = 'exercise_actions_extended'
+                        user.exerciseEditing = botPrefs.exercisesNamesRu.index(responseDefault)
+                        message = f'Выберите действие с упражнением {responseDefault!r}.\nТекущие настройки: {user.getExerciseByName(responseDefault)!r}.'
                     elif user.lastKeyboard == 'profiles' and responseDefault in {*user.profileNames}:
                         kb = 'profile_actions'
                         user.profile = user.profileNames.index(responseDefault)
@@ -269,7 +277,7 @@ def main():
             return
         if (userIdStr := str(userId)) not in {*users}:
             addUser(userId)
-        user = users[userIdStr]
+        user: User = users[userIdStr]
 
         try:
             match vk_event.type:

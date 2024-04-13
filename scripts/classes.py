@@ -23,7 +23,7 @@ __all__ = ['botPrefs', 'DictLikeClass', 'BotPrefs', 'VersionInfo', 'Users', 'Bas
 
 @dataclass
 class VersionInfo:
-    full: str = f'1.0.0indev19.00 (000000.0-1900.{datetime.now():{Constants.DateTimeForms.forVersion}})'
+    full: str = f'1.0.0indev20.00 (000000.0-2000.{datetime.now():{Constants.DateTimeForms.forVersion}})'
     name: str = 'Release'
     changelog: str = (
         '\n\n❕1.0.0r'
@@ -200,12 +200,12 @@ class BotPrefs(DictLikeClass):
     sendExecutionTime: bool = True
 
     @property
-    def exercisesNames(self) -> set[str]:
-        return {exerciseName for exerciseName, _ in self.exercises}
+    def exercisesNames(self) -> list[str]:
+        return [exerciseName for exerciseName, _ in self.exercises]
 
     @property
-    def exercisesNamesRu(self) -> set[str]:
-        return {exercise.name for _, exercise in self.exercises}
+    def exercisesNamesRu(self) -> list[str]:
+        return [exercise.name for _, exercise in self.exercises]
 
 
 botPrefs = BotPrefs.fromFile(Database.botPrefsFilePath)
@@ -270,11 +270,11 @@ class BaseUser(DictLikeClass):
 
     @property
     def currentProfile(self) -> list[list[str]]:
-        return self.profiles[self.profile]
+        return self.profiles[self.profile] if self.profile < len(self.profiles) else []
 
     @property
     def currentDay(self) -> list[str]:
-        return self.profiles[self.profile][self.day]
+        return self.profiles[self.profile][self.day] if self.day < len(self.profiles[self.profile]) else []
 
     @property
     def currentExercise(self) -> UserExercise:
@@ -311,6 +311,8 @@ class BaseUser(DictLikeClass):
                 kb.add_button('Назад', 'negative')
 
             case 'exercises':
+                kb.add_button('Удалить день', 'negative')
+                kb.add_line()
                 kb.add_button('Добавить упражнение', 'primary')
                 for exercise in self.currentDay:
                     kb.add_line()
