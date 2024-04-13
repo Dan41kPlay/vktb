@@ -20,9 +20,9 @@
         "lastName": "\u041c\u0438\u0440\u0433\u0430\u044f\u0437\u043e\u0432",
         "gender": 2,
         "profile": 0,
-        "day": 1,
+        "day": 0,
         "exercise": 0,
-        "exerciseEditing": 9,
+        "exerciseEditing": 0,
         "exercises": [],
         "profiles": [
             [
@@ -33,8 +33,8 @@
         "profileNames": [
             "\u0419\u0446\u0443\u043a\u0435\u043d\u0433"
         ],
-        "lastMessage": "\u0414\u0435\u043d\u044c 1",
-        "lastKeyboard": "exercises"
+        "lastMessage": "\u041d\u0430\u0437\u0430\u0434",
+        "lastKeyboard": "days"
     },
     "483021086": {
         "id": 483021086,
@@ -44,10 +44,15 @@
         "profile": 0,
         "day": 0,
         "exercise": 0,
-        "exerciseEditing": 3,
+        "exerciseEditing": 1,
         "exercises": [],
         "profiles": [
             [
+                [
+                    "\u0436\u0438\u043c \u0433\u0430\u043d\u0442\u0435\u043b\u0435\u0439 \u0441\u0438\u0434\u044f",
+                    "\u0441\u0433\u0438\u0431\u0430\u043d\u0438\u0435 \u0440\u0443\u043a \u0441\u043e \u0448\u0442\u0430\u043d\u0433\u043e\u0439",
+                    "\u0416\u0438\u043c \u0433\u0430\u043d\u0442\u0435\u043b\u0435\u0439 \u043b\u0451\u0436\u0430"
+                ],
                 [],
                 [],
                 [],
@@ -57,7 +62,22 @@
         "profileNames": [
             "\u0410\u0440\u043e\u043e"
         ],
-        "lastMessage": "\u041d\u0430\u0437\u0430\u0434",
-        "lastKeyboard": "profiles"
+        "lastMessage": "\u0416\u0438\u043c \u0433\u0430\u043d\u0442\u0435\u043b\u0435\u0439 \u043b\u0451\u0436\u0430",
+        "lastKeyboard": "add_exercise"
+    },
+    "633646778": {
+        "id": 633646778,
+        "firstName": "",
+        "lastName": "",
+        "gender": 0,
+        "profile": 0,
+        "day": 0,
+        "exercise": 0,
+        "exerciseEditing": 0,
+        "exercises": [],
+        "profiles": [],
+        "profileNames": [],
+        "lastMessage": "",
+        "lastKeyboard": "main"
     }
 }

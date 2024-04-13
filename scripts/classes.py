@@ -18,12 +18,12 @@ from .functions import *
 from libs.vk_api_fast.keyboard import VkKeyboard
 
 
-__all__ = ['botPrefs', 'DictLikeClass', 'BotPrefs', 'VersionInfo', 'Users', 'BaseUser']
+__all__ = ['botPrefs', 'DictLikeClass', 'BotPrefs', 'VersionInfo', 'Users', 'BaseUser', 'UserExercise']
 
 
 @dataclass
 class VersionInfo:
-    full: str = f'1.0.0indev18.00 (000000.0-1800.{datetime.now():{Constants.DateTimeForms.forVersion}})'
+    full: str = f'1.0.0indev19.00 (000000.0-1900.{datetime.now():{Constants.DateTimeForms.forVersion}})'
     name: str = 'Release'
     changelog: str = (
         '\n\n❕1.0.0r'
@@ -247,7 +247,7 @@ class BaseUser(DictLikeClass):
     day: int = 0
     exercise: int = 0
     exerciseEditing: int = 0
-    exercises: list[UserExercise] = field(default_factory=list)
+    exercises: list[UserExercise] = field(default_factory=lambda: [UserExercise(exerciseName) for exerciseName in botPrefs.exercisesNamesRu])
     profiles: list[list[list[str]]] = field(default_factory=list)
     profileNames: list[str] = field(default_factory=list)
     lastMessage: str = ''
@@ -318,7 +318,7 @@ class BaseUser(DictLikeClass):
                 kb.add_line()
                 kb.add_button('Назад', 'negative')
 
-            case 'exercise_list':
+            case 'exercise_list' | 'add_exercise':
                 for counter, (_, exercise) in enumerate(botPrefs.exercises):
                     kb.add_button(exercise.name, 'positive')
                     if counter % 2:
@@ -334,16 +334,29 @@ class BaseUser(DictLikeClass):
                 kb.add_button('Удалить', 'negative')
 
             case 'exercise_actions':
-                kb.add_button('[Р] Подходы', 'negative')
-                kb.add_button('[О] Подходы', 'positive')
+                kb.add_button(f'[Р] Подходы', 'negative')
+                kb.add_button(f'[О] Подходы', 'positive')
                 kb.add_line()
-                kb.add_button('[Р] Повторения', 'negative')
-                kb.add_button('[О] Повторения', 'positive')
+                kb.add_button(f'[Р] Повторения', 'negative')
+                kb.add_button(f'[О] Повторения', 'positive')
                 kb.add_line()
-                kb.add_button('[Р] Вес', 'negative')
-                kb.add_button('[О] Вес', 'positive')
+                kb.add_button(f'[Р] Вес', 'negative')
+                kb.add_button(f'[О] Вес', 'positive')
                 kb.add_line()
                 kb.add_button('Заметка', 'secondary')
+
+            case 'exercise_actions_extended':
+                kb.add_button(f'[Р] Подходы', 'negative')
+                kb.add_button(f'[О] Подходы', 'positive')
+                kb.add_line()
+                kb.add_button(f'[Р] Повторения', 'negative')
+                kb.add_button(f'[О] Повторения', 'positive')
+                kb.add_line()
+                kb.add_button(f'[Р] Вес', 'negative')
+                kb.add_button(f'[О] Вес', 'positive')
+                kb.add_line()
+                kb.add_button('Заметка', 'secondary')
+                kb.add_button('Удалить', 'negative', ['remove_exercise'])
 
             case _:
                 return kb.get_empty_keyboard()

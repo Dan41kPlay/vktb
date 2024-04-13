@@ -122,6 +122,9 @@ def main():
                         case 'exercises':
                             kb = 'days'
                             message = 'Вы вернулись в меню дней.'
+                        case 'add_exercise':
+                            kb = 'exercises'
+                            message = 'Вы вернулись в список упражнений.'
                         case _:
                             kb = 'main'
                             message = 'Вы вернулись в главное меню.'
@@ -147,6 +150,7 @@ def main():
                     user.profiles[user.profile].append([])
                     message = 'Новый день добавлен.'
                 case 'добавить упражнение':
+                    kb = 'add_exercise'
                     message = 'Выберите упражнение для добавления.'
                 case 'упражнения':
                     kb = 'exercise_list'
@@ -165,6 +169,11 @@ def main():
                     message = 'Введите вес в основные подходы.'
                 case 'заметка':
                     message = 'Введите заметку к упражнению.'
+                case 'remove_exercise':
+                    kb = 'exercises'
+                    user.profiles[user.profile][user.day].remove(user.exercisesNames[user.exerciseEditing])
+                    user.exerciseEditing = 0
+                    message = 'Упражнение удалено из дня.'
                 case _:
                     if user.lastKeyboard == 'days' and responseDefault in {f'День {day + 1}' for day in range(len(user.currentProfile))}:
                         kb = 'exercises'
@@ -174,6 +183,11 @@ def main():
                         kb = 'exercise_actions'
                         user.exerciseEditing = [*botPrefs.exercisesNamesRu].index(responseDefault)
                         message = f'Выберите действие с упражнением {responseDefault!r}.'
+                    elif user.lastKeyboard in {'add_exercise', 'exercises'} and responseDefault in {*botPrefs.exercisesNamesRu}:
+                        kb = 'exercise_actions_extended'
+                        user.exerciseEditing = [*botPrefs.exercisesNamesRu].index(responseDefault)
+                        user.profiles[user.profile][user.day].append(responseDefault)
+                        message = f'Упражнение {responseDefault!r} добавлено. Теперь вы можете сразу отредактировать его, используя кнопки ниже.'
                     elif user.lastKeyboard == 'profiles' and responseDefault in {*user.profileNames}:
                         kb = 'profile_actions'
                         user.profile = user.profileNames.index(responseDefault)
@@ -198,7 +212,7 @@ def main():
                             message = 'Вы ввели не целое число. Попробуйте ещё раз.'
                         case '[О] Подходы':
                             if tryParse(response, int):
-                                user.exercises[user.exerciseEditing].mainUpApproaches.amount = int(response)
+                                user.exercises[user.exerciseEditing].mainApproaches.amount = int(response)
                                 message = f'Количество основных подходов изменено на {response}.'
                                 return
                             responseDefault = user.lastMessage

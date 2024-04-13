@@ -22,7 +22,7 @@
         "profile": 0,
         "day": 0,
         "exercise": 0,
-        "exerciseEditing": 9,
+        "exerciseEditing": 0,
         "exercises": [],
         "profiles": [
             [
@@ -33,7 +33,7 @@
         "profileNames": [
             "\u0419\u0446\u0443\u043a\u0435\u043d\u0433"
         ],
-        "lastMessage": "\u0414\u0435\u043d\u044c 1",
+        "lastMessage": "\u041d\u0430\u0437\u0430\u0434",
         "lastKeyboard": "days"
     },
     "483021086": {
@@ -51,6 +51,7 @@
                 [],
                 [],
                 [],
+                [],
                 []
             ]
         ],
@@ -58,6 +59,21 @@
             "\u0410\u0440\u043e\u043e"
         ],
         "lastMessage": "\u041d\u0430\u0437\u0430\u0434",
-        "lastKeyboard": "profiles"
+        "lastKeyboard": "days"
+    },
+    "633646778": {
+        "id": 633646778,
+        "firstName": "",
+        "lastName": "",
+        "gender": 0,
+        "profile": 0,
+        "day": 0,
+        "exercise": 0,
+        "exerciseEditing": 0,
+        "exercises": [],
+        "profiles": [],
+        "profileNames": [],
+        "lastMessage": "",
+        "lastKeyboard": "main"
     }
 }
