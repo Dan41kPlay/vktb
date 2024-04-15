@@ -52,7 +52,7 @@ def main():
                             'message': ''.join(messagePart),
                             'keyboard': keyboard,
                             'random_id': 0,
-                            'attachments': ''
+                            'attachment': attachment if attachment is not None else ''
                         },
                         name='Message sender'
                     ).start()
@@ -102,7 +102,7 @@ def main():
 
     def onEvent(vk_event: VkBotEvent) -> None:
         def onMessage() -> None:
-            nonlocal response, responseDefault, responseAdditional, message, kb
+            nonlocal response, responseDefault, responseAdditional, message, attachment, kb
             if userId in {*botPrefs.admins} and response[0] == '.':
                 cmdMsg: list[bool | float | int | str] = responseDefault.split(' ')
                 cmdSyntax = cmds[0] if (cmds := [command for command in Constants.commands.splitlines() if cmdMsg[0] in command]) else ''
@@ -196,6 +196,7 @@ def main():
                         kb = 'exercise_actions_extended'
                         user.exerciseEditing = botPrefs.exercisesNamesRu.index(responseDefault)
                         message = f'Выберите действие с упражнением {responseDefault!r}.\nТекущие настройки: {user.getExerciseByName(responseDefault)!r}.'
+                        attachment = botPrefs.getExerciseByNameRu(responseDefault).animationVkId
                     elif user.lastKeyboard == 'profiles' and responseDefault in {*user.profileNames}:
                         kb = 'profile_actions'
                         user.profile = user.profileNames.index(responseDefault)
@@ -262,7 +263,7 @@ def main():
         except IndexError:
             log('info', f'New event: {str(vk_event.type).replace('_', ' ').lower()}')
 
-        userId, message, responseDefault, responseAdditional, kb, timerStart = 0, '', '', '', 'last', perf_counter()
+        userId, message, attachment, responseDefault, responseAdditional, kb, timerStart = 0, '', '', '', '', 'last', perf_counter()
         match vk_event.type:
             case VkBotEventType.MESSAGE_NEW:
                 payload = loads(vk_event.object.message['payload']) if 'payload' in {*vk_event.object.message} else vk_event.object.message['text']
@@ -295,7 +296,7 @@ def main():
             if kb != 'last' and kb not in Constants.inlineKeyboards:
                 user.lastKeyboard = kb
             timerEnd = perf_counter()
-            user.sendMessage(kb, message, time=timerEnd - timerStart)
+            user.sendMessage(kb, message, attachment, timerEnd - timerStart)
             users[userIdStr] = user
 
         except Exception:
