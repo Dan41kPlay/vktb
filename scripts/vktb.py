@@ -150,6 +150,7 @@ def main():
                     user.profiles[user.profile].append([])
                     message = 'Новый день добавлен.'
                 case 'удалить день':
+                    kb = 'days'
                     del user.profiles[user.profile][user.day]
                     message = f'{user.day + 1}-й день удалён.'
                     user.day = 0
@@ -242,19 +243,19 @@ def main():
                             message = 'Вы ввели не целое число. Попробуйте ещё раз.'
                         case '[Р] Вес':
                             if tryParse(response, float):
-                                user.exercises[user.exerciseEditing].warmUpApproaches.weight = int(response)
+                                user.exercises[user.exerciseEditing].warmUpApproaches.weight = float(response)
                                 message = f'Вес в разминочные подходы изменён на {response}.'
                                 return
                             responseDefault = user.lastMessage
                             message = 'Вы ввели не число. Попробуйте ещё раз.'
                         case '[О] Вес':
                             if tryParse(response, float):
-                                user.exercises[user.exerciseEditing].mainApproaches.weight = int(response)
+                                user.exercises[user.exerciseEditing].mainApproaches.weight = float(response)
                                 message = f'Вес в основные подходы изменён на {response}.'
                                 return
                             responseDefault = user.lastMessage
                             message = 'Вы ввели не число. Попробуйте ещё раз.'
-                        case 'заметка':
+                        case 'Заметка':
                             user.exercises[user.exerciseEditing].note = responseDefault
                             message = 'Заметка добавлена.'
 

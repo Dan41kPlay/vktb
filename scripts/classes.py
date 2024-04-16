@@ -23,7 +23,7 @@ __all__ = ['botPrefs', 'DictLikeClass', 'BotPrefs', 'VersionInfo', 'Users', 'Bas
 
 @dataclass
 class VersionInfo:
-    full: str = f'1.0.0a01.00 (000000.1-0100.{datetime.now():{Constants.DateTimeForms.forVersion}})'
+    full: str = f'1.0.0a02.00 (000000.1-0200.{datetime.now():{Constants.DateTimeForms.forVersion}})'
     name: str = 'Release'
     changelog: str = (
         '\n\n❕1.0.0r'
@@ -257,12 +257,12 @@ class BaseUser(DictLikeClass):
     lastKeyboard: str = 'main'
 
     @property
-    def fullName(self):
+    def fullName(self) -> str:
         return f'{self.firstName} {self.lastName}'
 
     @property
-    def exercisesNames(self):
-        return {exercise.name for exercise in self.exercises}
+    def exercisesNames(self) -> list[str]:
+        return [exercise.name for exercise in self.exercises]
 
     def getExerciseByName(self, name: str) -> UserExercise:
         return self.exercises[[*self.exercisesNames].index(name)]

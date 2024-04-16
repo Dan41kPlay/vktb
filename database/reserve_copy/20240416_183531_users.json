@@ -7,7 +7,7 @@
         "profile": 0,
         "day": 0,
         "exercise": 0,
-        "exerciseEditing": 1,
+        "exerciseEditing": 0,
         "exercises": [
             {
                 "name": "\u0416\u0438\u043c \u0433\u0430\u043d\u0442\u0435\u043b\u0435\u0439 \u043b\u0451\u0436\u0430",
@@ -17,7 +17,7 @@
                     "weight": 0
                 },
                 "mainApproaches": {
-                    "amount": 10,
+                    "amount": 0,
                     "repetitions": 0,
                     "weight": 0
                 },
@@ -35,7 +35,7 @@
                     "repetitions": 0,
                     "weight": 0
                 },
-                "note": "\ud83e\udd78\ud83d\udd2b"
+                "note": ""
             },
             {
                 "name": "\u0416\u0438\u043c \u043b\u0451\u0436\u0430",
@@ -83,15 +83,15 @@
                 "name": "\u0420\u0430\u0437\u0433\u0438\u0431\u0430\u043d\u0438\u0435 \u0440\u0443\u043a \u0432 \u043d\u0430\u043a\u043b\u043e\u043d\u0435",
                 "warmUpApproaches": {
                     "amount": 0,
-                    "repetitions": -10,
-                    "weight": Infinity
+                    "repetitions": 0,
+                    "weight": 0
                 },
                 "mainApproaches": {
                     "amount": 0,
                     "repetitions": 0,
-                    "weight": 100000.0
+                    "weight": 0
                 },
-                "note": "Iwiiqiwiiqqiiqqiqiqiqiqiqiqiiqiqiqiqiqiqiqiqiqiiq Iwiiqiwiiqqiiqqiqiqiqiqiqiqiiqiqiqiqiqiqiqiqiqiiq Iwiiqiwiiqqiiqqiqiqiqiqiqiqiiqiqiqiqiqiqiqiqiqiiq Iwiiqiwiiqqiiqqiqiqiqiqiqiqiiqiqiqiqiqiqiqiqiqiiq Iwiiqiwiiqqiiqqiqiqiqiqiqiqiiqiqiqiqiqiqiqiqiqiiq Iwiiqiwiiqqiiqqiqiqiqiqiqiqiiqiqiqiqiqiqiqiqiqiiq Iwiiqiwiiqqiiqqiqiqiqiqiqiqiiqiqiqiqiqiqiqiqiqiiq Iwiiqiwiiqqiiqqiqiqiqiqiqiqiiqiqiqiqiqiqiqiqiqiiq Iwiiqiwiiqqiiqqiqiqiqiqiqiqiiqiqiqiqiqiqiqiqiqiiq Iwiiqiwiiqqiiqqiqiqiqiqiqiqiiqiqiqiqiqiqiqiqiqiiq Iwiiqiwiiqqiiqqiqiqiqiqiqiqiiqiqiqiqiqiqiqiqiqiiq Iwiiqiwiiqqiiqqiqiqiqiqiqiqiiqiqiqiqiqiqiqiqiqiiq Iwiiqiwiiqqiiqqiqiqiqiqiqiqiiqiqiqiqiqiqiqiqiqiiq Iwiiqiwiiqqiiqqiqiqiqiqiqiqiiqiqiqiqiqiqiqiqiqiiq Iwiiqiwiiqqiiqqiqiqiqiqiqiqiiqiqiqiqiqiqiqiqiqiiq Iwiiqiwiiqqiiqqiqiqiqiqiqiqiiqiqiqiqiqiqiqiqiqiiq Iwiiqiwiiqqiiqqiqiqiqiqiqiqiiqiqiqiqiqiqiqiqiqiiq Iwiiqiwiiqqiiqqiqiqiqiqiqiqiiqiqiqiqiqiqiqiqiqiiq Iwiiqiwiiqqiiqqiqiqiqiqiqiqiiqiqiqiqiqiqiqiqiqiiq Iwiiqiwiiqqiiqqiqiqiqiqiqiqiiqiqiqiqiqiqiqiqiqiiq Iwiiqiwiiqqiiqqiqiqiqiqiqiqiiqiqiqiqiqiqiqiqiqiiq Iwiiqiwiiqqiiqqiqiqiqiqiqiqiiqiqiqiqiqiqiqiqiqiiq"
+                "note": ""
             },
             {
                 "name": "\u0424\u0440\u0430\u043d\u0446\u0443\u0437\u0441\u043a\u0438\u0439 \u0436\u0438\u043c \u043b\u0451\u0436\u0430",
@@ -167,22 +167,15 @@
         "profiles": [
             [
                 [
-                    "\u0420\u0430\u0437\u0433\u0438\u0431\u0430\u043d\u0438\u0435 \u0440\u0443\u043a \u0432 \u043d\u0430\u043a\u043b\u043e\u043d\u0435",
-                    "\u0416\u0438\u043c \u0433\u0430\u043d\u0442\u0435\u043b\u0435\u0439 \u0441\u0438\u0434\u044f"
-                ],
-                [],
-                [
-                    "\u0416\u0438\u043c \u0433\u0430\u043d\u0442\u0435\u043b\u0435\u0439 \u043b\u0451\u0436\u0430"
-                ],
-                [
+                    "\u0422\u044f\u0433\u0430 \u043a \u043f\u043e\u044f\u0441\u0443",
                     "\u0416\u0438\u043c \u0433\u0430\u043d\u0442\u0435\u043b\u0435\u0439 \u043b\u0451\u0436\u0430"
                 ]
             ]
         ],
         "profileNames": [
-            "\u041e\u0447\u043a\u043e"
+            "\u0425\u0443\u0439"
         ],
-        "lastMessage": "https://youtu.be/dQw4w9WgXcQ",
+        "lastMessage": "\u0416\u0438\u043c \u0433\u0430\u043d\u0442\u0435\u043b\u0435\u0439 \u043b\u0451\u0436\u0430",
         "lastKeyboard": "exercises"
     },
     "0": {
