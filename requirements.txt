@@ -1,0 +1,7 @@
+ujson
+requests
+tendo
+dacite
+emoji
+pymorphy3
+rich
