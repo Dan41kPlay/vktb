@@ -23,7 +23,7 @@ __all__ = ['botPrefs', 'DictLikeClass', 'BotPrefs', 'VersionInfo', 'Users', 'Bas
 
 @dataclass
 class VersionInfo:
-    full: str = f'1.0.0a02.00 (000000.1-0200.{datetime.now():{Constants.DateTimeForms.forVersion}})'
+    full: str = f'1.0.0a03.00 (000000.1-0300.{datetime.now():{Constants.DateTimeForms.forVersion}})'
     name: str = 'Release'
     changelog: str = (
         '\n\n❕1.0.0r'
@@ -314,12 +314,16 @@ class BaseUser(DictLikeClass):
                 kb.add_button('Назад', 'negative')
 
             case 'exercises':
+                kb.add_button('Начать тренировку', 'positive')
+                kb.add_line()
                 kb.add_button('Удалить день', 'negative')
                 kb.add_line()
                 kb.add_button('Добавить упражнение', 'primary')
-                for exercise in self.currentDay:
-                    kb.add_line()
+                kb.add_line()
+                for counter, exercise in enumerate(self.currentDay):
                     kb.add_button(exercise, 'positive')
+                    if counter % 2:
+                        kb.add_line()
                 kb.add_line()
                 kb.add_button('Назад', 'negative')
 

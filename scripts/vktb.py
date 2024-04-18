@@ -35,7 +35,7 @@ def main():
     class User(BaseUser):
         def sendMessage(self,
                         keyboard: str = 'last', message: Any = None,
-                        attachment: Any = None, time: float = 0.,
+                        attachment: str = None, time: float = 0.,
                         max_message_length: int = 4096) -> None:
             if not message:
                 return
@@ -154,6 +154,8 @@ def main():
                     del user.profiles[user.profile][user.day]
                     message = f'{user.day + 1}-й день удалён.'
                     user.day = 0
+                case 'начать тренировку':
+                    message = 'Функция в разработке.'
                 case 'добавить упражнение':
                     kb = 'add_exercise'
                     message = 'Выберите упражнение для добавления.'
@@ -187,16 +189,20 @@ def main():
                     elif user.lastKeyboard == 'exercise_list' and responseDefault in {*botPrefs.exercisesNamesRu}:
                         kb = 'exercise_actions'
                         user.exerciseEditing = botPrefs.exercisesNamesRu.index(responseDefault)
-                        message = f'Выберите действие с упражнением {responseDefault!r}.'
+                        message = (f'Выберите действие с упражнением {responseDefault!r}.\n'
+                                   f'Об упражнении:\n{botPrefs.getExerciseByNameRu(responseDefault).description}')
                     elif user.lastKeyboard == 'add_exercise' and responseDefault in {*botPrefs.exercisesNamesRu}:
                         kb = 'exercise_actions_extended'
                         user.exerciseEditing = botPrefs.exercisesNamesRu.index(responseDefault)
                         user.profiles[user.profile][user.day].append(responseDefault)
-                        message = f'Упражнение {responseDefault!r} добавлено. Теперь вы можете сразу отредактировать его, используя кнопки ниже.'
+                        message = (f'Упражнение {responseDefault!r} добавлено. Теперь вы можете сразу отредактировать его, используя кнопки ниже.\n'
+                                   f'Об упражнении:\n{botPrefs.getExerciseByNameRu(responseDefault).description}')
                     elif user.lastKeyboard == 'exercises' and responseDefault in {*botPrefs.exercisesNamesRu}:
                         kb = 'exercise_actions_extended'
                         user.exerciseEditing = botPrefs.exercisesNamesRu.index(responseDefault)
-                        message = f'Выберите действие с упражнением {responseDefault!r}.\nТекущие настройки: {user.getExerciseByName(responseDefault)!r}.'
+                        message = (f'Выберите действие с упражнением {responseDefault!r}.\n'
+                                   f'Текущие настройки: {user.getExerciseByName(responseDefault)!r}\n'
+                                   f'Об упражнении:\n{botPrefs.getExerciseByNameRu(responseDefault).description}')
                         attachment = botPrefs.getExerciseByNameRu(responseDefault).animationVkId
                     elif user.lastKeyboard == 'profiles' and responseDefault in {*user.profileNames}:
                         kb = 'profile_actions'
