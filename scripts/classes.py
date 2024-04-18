@@ -23,7 +23,7 @@ __all__ = ['botPrefs', 'DictLikeClass', 'BotPrefs', 'VersionInfo', 'Users', 'Bas
 
 @dataclass
 class VersionInfo:
-    full: str = f'1.0.0a03.00 (000000.1-0300.{datetime.now():{Constants.DateTimeForms.forVersion}})'
+    full: str = f'1.0.0a03.01 (000000.1-0301.{datetime.now():{Constants.DateTimeForms.forVersion}})'
     name: str = 'Release'
     changelog: str = (
         '\n\n❕1.0.0r'
@@ -373,7 +373,9 @@ class BaseUser(DictLikeClass):
         if not inline and hasToMenuButton:
             kb.add_button('🔚В меню', 'negative')
 
-        return kb.get_keyboard()
+        kb = loads(kb.get_keyboard())
+        kb['buttons'] = [line for line in kb['buttons'] if line]
+        return dumps(kb, ensure_ascii=False)
 
 
 class Users(dict):
