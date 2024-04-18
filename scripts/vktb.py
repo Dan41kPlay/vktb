@@ -1,11 +1,9 @@
 from ctypes import windll
-from dataclasses import asdict, dataclass
-from datetime import datetime, timedelta
+from dataclasses import dataclass
+from datetime import datetime
 from itertools import batched
-from math import inf, prod
 from os import listdir, remove as rmfile
 from pathlib import Path
-from secrets import choice as select
 from shutil import get_terminal_size
 from sys import exit
 from threading import Thread
@@ -13,16 +11,15 @@ from time import perf_counter, sleep
 from traceback import format_exc
 from typing import Any, Literal
 
-from requests.exceptions import ConnectTimeout
 from tendo.singleton import SingleInstance, SingleInstanceException
-from ujson import dumps, loads
+from ujson import loads
 
 from .config import *
 from .classes import *
 from .functions import *
 from libs.vk_api_fast import VkApi
 from libs.vk_api_fast.bot_longpoll import VkBotEvent, VkBotEventType, VkBotLongPoll
-from libs.vk_api_fast.exceptions import ApiError, VkApiError
+from libs.vk_api_fast.exceptions import ApiError
 
 
 botPrefs: BotPrefs

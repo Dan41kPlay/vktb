@@ -2,7 +2,6 @@ from pathlib import Path
 from threading import Thread
 from typing import Callable, Final, Optional, Type
 
-from libs.vk_api_fast.bot_longpoll import VkBotEventType
 
 
 __all__ = ['Group', 'Constants', 'Database', 'logs', 'group', 'decideAsync',

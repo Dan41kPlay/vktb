@@ -1,14 +1,10 @@
-from collections.abc import Collection, Iterable, Sequence
-from dataclasses import dataclass, field, fields, asdict, astuple
+from collections.abc import Collection
+from dataclasses import dataclass, field, fields, asdict
 from datetime import datetime
-from math import inf
 from os import makedirs
 from os.path import exists
 from pathlib import Path
-from random import shuffle
-from secrets import choice
-from string import ascii_letters, digits
-from typing import Any, Literal, Self, Type
+from typing import Any, Self, Type
 
 from dacite import from_dict
 from ujson import dumps, loads, JSONDecodeError
@@ -23,7 +19,7 @@ __all__ = ['botPrefs', 'DictLikeClass', 'BotPrefs', 'VersionInfo', 'Users', 'Bas
 
 @dataclass
 class VersionInfo:
-    full: str = f'1.0.0a03.01 (000000.1-0301.{datetime.now():{Constants.DateTimeForms.forVersion}})'
+    full: str = f'1.0.0a04.00 (000000.1-0400.{datetime.now():{Constants.DateTimeForms.forVersion}})'
     name: str = 'Release'
     changelog: str = (
         '\n\n❕1.0.0r'
